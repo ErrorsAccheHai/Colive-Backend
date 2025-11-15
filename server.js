@@ -23,3 +23,8 @@ app.use('/api/booking', require('./src/routes/booking'));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server started on ${PORT}`));
+
+app.get("/api/test", (req, res) => {
+  res.send("API working");
+});
+
