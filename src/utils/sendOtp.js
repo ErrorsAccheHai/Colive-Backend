@@ -34,51 +34,58 @@ async function sendOtpMail(to, otp) {
   if (EMAIL_PROVIDER === 'resend' && resendClient) {
     try {
       console.log('Attempting to send OTP via Resend...');
+<<<<<<< HEAD
       const fromAddr = process.env.RESEND_FROM || 'onboarding@resend.dev';
 
+=======
+     // const fromAddr = process.env.RESEND_FROM || 'onboarding@resend.dev';
+      const fromAddr = process.env.RESEND_FROM || 'noreply@co-live.me';
+
+      
+>>>>>>> origin/main
       const mainHtml = `<div style="font-family: Arial, sans-serif; padding: 20px;"><h2>Co-Live Verification Code</h2><p>Your verification code is: <strong>${otp}</strong></p><p>This code will expire in 5 minutes.</p></div>`;
       const mainResp = await resendClient.emails.send({
-        from: fromAddr,
-        to: to,
-        subject: 'Co-Live OTP Verification',
-        html: mainHtml,
-        text: `Co-Live Verification Code\nYour verification code is: ${otp}\nThis code will expire in 5 minutes.`
-      });
+        try {
+          console.log('Attempting to send OTP via Resend...');
+          const fromAddr = process.env.RESEND_FROM || 'noreply@co-live.me';
 
-      const mainId = mainResp?.data?.id || mainResp?.id || null;
-      console.log('Resend main send response id:', mainId, 'raw:', mainResp);
+          const mainHtml = `<div style="font-family: Arial, sans-serif; padding: 20px;"><h2>Co-Live Verification Code</h2><p>Your verification code is: <strong>${otp}</strong></p><p>This code will expire in 5 minutes.</p></div>`;
+          const mainResp = await resendClient.emails.send({
+            from: fromAddr,
+            to: to,
+            subject: 'Co-Live OTP Verification',
+            html: mainHtml,
+            text: `Co-Live Verification Code\nYour verification code is: ${otp}\nThis code will expire in 5 minutes.`
+          });
 
-      let testId = null;
-      if (isTestMode && testRecipient) {
-        const testHtml = `<div style="font-family: Arial, sans-serif; padding: 20px;"><h2>TEST COPY - Co-Live Verification Code</h2><p>Original recipient: <strong>${to}</strong></p><p>Verification code: <strong>${otp}</strong></p></div>`;
-        const testResp = await resendClient.emails.send({
-          from: fromAddr,
-          to: testRecipient,
-          subject: `TEST COPY: OTP for ${to}`,
-          html: testHtml,
-          text: `TEST COPY - Original recipient: ${to} \nVerification code: ${otp}`
-        });
-        testId = testResp?.data?.id || testResp?.id || null;
-        console.log('Resend test copy response id:', testId, 'raw:', testResp);
-      }
+          const mainId = mainResp?.data?.id || mainResp?.id || null;
+          console.log('Resend main send response id:', mainId, 'raw:', mainResp);
 
-      return { id: mainId, testId };
-    } catch (err) {
-      console.error('Resend send error:', err);
-      // If resend returned a 403 sandbox error (unverified domain), fall back to SMTP if available
-      if (err?.error?.statusCode === 403 || err?.statusCode === 403) {
-        console.log('Resend blocked (likely unverified domain) — falling back to SMTP if configured');
-        // continue to SMTP fallback
-      } else {
-        throw err;
-      }
-    }
-  }
+          let testId = null;
+          if (isTestMode && testRecipient) {
+            const testHtml = `<div style="font-family: Arial, sans-serif; padding: 20px;"><h2>TEST COPY - Co-Live Verification Code</h2><p>Original recipient: <strong>${to}</strong></p><p>Verification code: <strong>${otp}</strong></p></div>`;
+            const testResp = await resendClient.emails.send({
+              from: fromAddr,
+              to: testRecipient,
+              subject: `TEST COPY: OTP for ${to}`,
+              html: testHtml,
+              text: `TEST COPY - Original recipient: ${to} \nVerification code: ${otp}`
+            });
+            testId = testResp?.data?.id || testResp?.id || null;
+            console.log('Resend test copy response id:', testId, 'raw:', testResp);
+          }
 
-  // SMTP fallback (Brevo)
-  if (!smtpTransporter) throw new Error('No email transport available (RESEND not configured and SMTP not configured)');
-  try {
-    console.log('Attempting to send OTP via SMTP (Brevo)');
+          return { id: mainId, testId };
+        } catch (err) {
+          console.error('Resend send error:', err);
+          // If resend returned a 403 sandbox error (unverified domain), fall back to SMTP if available
+          if (err?.error?.statusCode === 403 || err?.statusCode === 403) {
+            console.log('Resend blocked (likely unverified domain) — falling back to SMTP if configured');
+            // continue to SMTP fallback
+          } else {
+            throw err;
+          }
+        }
     const fromAddress = process.env.BREVO_FROM || process.env.BREVO_USER || 'no-reply@example.com';
     const mailOptions = {
       from: `"Co-Live" <${fromAddress}>`,

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ### Node ###
 # dependencies
 node_modules/
@@ -53,3 +54,8 @@ uploads/
 
 # temporary
 tmp/
+=======
+node_modules
+.env
+>>>>>>> origin/main
+

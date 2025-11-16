@@ -22,4 +22,9 @@ app.use('/api/wallet', require('./src/routes/wallet'));
 app.use('/api/booking', require('./src/routes/booking'));
 
 const PORT = process.env.PORT || 5000;
+// Health-check / test route
+app.get('/api/test', (req, res) => {
+  res.send('API working');
+});
+
 app.listen(PORT, () => console.log(`Server started on ${PORT}`));
