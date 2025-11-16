@@ -1,0 +1,55 @@
+### Node ###
+# dependencies
+node_modules/
+
+# dotenv
+.env
+.env.*
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# OS
+.DS_Store
+
+# build outputs
+dist/
+build/
+coverage/
+.nyc_output/
+
+# editor
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# npm/yarn
+.pnpm-debug.log
+.pnp.*
+
+# cache
+.cache/
+.parcel-cache/
+
+# local env files
+.local.env
+
+# Runtime
+pids/
+*.pid
+*.seed
+
+# uploads (user content)
+uploads/
+
+# sqlite
+*.sqlite
+*.db
+
+# temporary
+tmp/
