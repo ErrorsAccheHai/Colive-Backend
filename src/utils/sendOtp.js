@@ -34,8 +34,10 @@ async function sendOtpMail(to, otp) {
   if (EMAIL_PROVIDER === 'resend' && resendClient) {
     try {
       console.log('Attempting to send OTP via Resend...');
-      const fromAddr = process.env.RESEND_FROM || 'onboarding@resend.dev';
+     // const fromAddr = process.env.RESEND_FROM || 'onboarding@resend.dev';
+      const fromAddr = process.env.RESEND_FROM || 'noreply@co-live.me';
 
+      
       const mainHtml = `<div style="font-family: Arial, sans-serif; padding: 20px;"><h2>Co-Live Verification Code</h2><p>Your verification code is: <strong>${otp}</strong></p><p>This code will expire in 5 minutes.</p></div>`;
       const mainResp = await resendClient.emails.send({
         from: fromAddr,
